@@ -910,17 +910,17 @@ class FishyGame {
 
     // Draw level 3 (largest) - no cap - at top
     for (let i = 0; i < level3; i++) {
-      this.drawFishbone(startX + i * 45, startY, 40);
+      this.drawFishbone(startX + i * 55, startY, 40);
     }
 
     // Draw level 2 (medium)
     for (let i = 0; i < level2; i++) {
-      this.drawFishbone(startX + i * 35, startY + 30, 30);
+      this.drawFishbone(startX + i * 45, startY + 30, 30);
     }
 
     // Draw level 1 (smallest)
     for (let i = 0; i < level1; i++) {
-      this.drawFishbone(startX + i * 25, startY + 55, 20);
+      this.drawFishbone(startX + i * 35, startY + 55, 20);
     }
   }
 

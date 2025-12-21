@@ -3,7 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "bun run src/index.ts",
+    "start": "bun run --hot src/index.ts",
     "build": "bun build --compile --minify --sourcemap --bytecode src/index.ts --outfile=dist/cli",
     "validate": "concurrently --group --names typecheck,lint,test --prefix name --prefix-colors auto \"bun run typecheck\" \"bun run lint\" \"bun run test\"",
     "typecheck": "tsc --noEmit",

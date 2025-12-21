@@ -71,6 +71,7 @@ All fish have a single rectangle hitbox.
 
 ![](fishbone-counters.png)
 
+- Top left of the screen
 - 3 levels
 - Lowest level (smallest fishbone) corresponds to 1 fish eaten
 - Each level is equivalent to 5 of the previous level

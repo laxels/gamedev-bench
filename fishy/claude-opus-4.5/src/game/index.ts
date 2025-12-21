@@ -57,10 +57,10 @@ class FishyGame {
 
   // Player state
   private playerX = GAME_WIDTH / 2;
-  private playerY = 50;
+  private playerY = 80;
   private playerSize = 20;
   private playerVelX = 0;
-  private playerVelY = 5; // Start going downwards
+  private playerVelY = 200; // Start going downwards fast
   private playerDirection: 1 | -1 = 1;
   private playerAnimationPhase = 0;
   private playerPulse = 0;
@@ -285,10 +285,10 @@ class FishyGame {
   private startGame(): void {
     this.gameState = "playing";
     this.playerX = GAME_WIDTH / 2;
-    this.playerY = 50;
+    this.playerY = 80;
     this.playerSize = 20;
     this.playerVelX = 0;
-    this.playerVelY = 5;
+    this.playerVelY = 200; // Fast downward start
     this.playerDirection = 1;
     this.score = 0;
     this.fishEaten = 0;
@@ -333,9 +333,9 @@ class FishyGame {
 
   private updatePlaying(dt: number): void {
     // Player movement with momentum
-    const acceleration = 400;
-    const friction = 3;
-    const maxSpeed = 250;
+    const acceleration = 1200;
+    const friction = 0.92; // Multiplier per frame (lower = more friction)
+    const maxSpeed = 500;
 
     // Horizontal input
     let inputX = 0;
@@ -364,8 +364,9 @@ class FishyGame {
     this.playerVelY += inputY * acceleration * dt;
 
     // Apply friction (momentum decay)
-    this.playerVelX *= (1 - friction * 0.3) ** (dt * 10);
-    this.playerVelY *= (1 - friction * 0.3) ** (dt * 10);
+    const frictionFactor = friction ** (dt * 60); // Frame-rate independent
+    this.playerVelX *= frictionFactor;
+    this.playerVelY *= frictionFactor;
 
     // Clamp velocity
     this.playerVelX = Math.max(-maxSpeed, Math.min(maxSpeed, this.playerVelX));

@@ -150,6 +150,12 @@ class FishyGame {
     this.canvas.addEventListener("click", (e: MouseEvent) =>
       this.handleClick(e),
     );
+
+    // Fullscreen button
+    const fullscreenBtn = document.getElementById("fullscreen-btn");
+    if (fullscreenBtn) {
+      fullscreenBtn.addEventListener("click", () => this.toggleFullscreen());
+    }
   }
 
   private resize(): void {
@@ -209,22 +215,11 @@ class FishyGame {
       }
     }
 
-    // Fullscreen button
-    if (this.isOverFullscreenButton(pos)) {
-      this.hoveredButton = "fullscreen";
-    }
-
     this.canvas.style.cursor = this.hoveredButton ? "pointer" : "default";
   }
 
   private handleClick(e: MouseEvent): void {
     const pos = this.getMousePos(e);
-
-    // Fullscreen button (available on all screens)
-    if (this.isOverFullscreenButton(pos)) {
-      this.toggleFullscreen();
-      return;
-    }
 
     if (this.gameState === "menu") {
       if (this.isOverButton(pos, GAME_WIDTH / 2, 420, "PLAY")) {
@@ -262,15 +257,6 @@ class FishyGame {
       pos.x <= bx + width / 2 &&
       pos.y >= by - height / 2 &&
       pos.y <= by + height / 2
-    );
-  }
-
-  private isOverFullscreenButton(pos: { x: number; y: number }): boolean {
-    return (
-      pos.x >= GAME_WIDTH - 40 &&
-      pos.x <= GAME_WIDTH - 10 &&
-      pos.y >= 10 &&
-      pos.y <= 40
     );
   }
 
@@ -562,9 +548,6 @@ class FishyGame {
     // Draw seaweeds (behind fish)
     this.drawSeaweeds();
 
-    // Draw fullscreen button (on all screens)
-    this.drawFullscreenButton();
-
     switch (this.gameState) {
       case "menu":
         this.renderMenu();
@@ -656,54 +639,6 @@ class FishyGame {
 
       this.ctx.restore();
     }
-  }
-
-  private drawFullscreenButton(): void {
-    const scale = this.hoveredButton === "fullscreen" ? 1.2 : 1;
-    const cx = GAME_WIDTH - 25;
-    const cy = 25;
-
-    this.ctx.save();
-    this.ctx.translate(cx, cy);
-    this.ctx.scale(scale, scale);
-    this.ctx.translate(-cx, -cy);
-
-    this.ctx.strokeStyle = "white";
-    this.ctx.lineWidth = 2;
-
-    // Draw fullscreen icon (4 corners)
-    const size = 10;
-    const gap = 4;
-
-    // Top-left
-    this.ctx.beginPath();
-    this.ctx.moveTo(cx - size - gap, cy - gap);
-    this.ctx.lineTo(cx - size - gap, cy - size - gap);
-    this.ctx.lineTo(cx - gap, cy - size - gap);
-    this.ctx.stroke();
-
-    // Top-right
-    this.ctx.beginPath();
-    this.ctx.moveTo(cx + gap, cy - size - gap);
-    this.ctx.lineTo(cx + size + gap, cy - size - gap);
-    this.ctx.lineTo(cx + size + gap, cy - gap);
-    this.ctx.stroke();
-
-    // Bottom-left
-    this.ctx.beginPath();
-    this.ctx.moveTo(cx - size - gap, cy + gap);
-    this.ctx.lineTo(cx - size - gap, cy + size + gap);
-    this.ctx.lineTo(cx - gap, cy + size + gap);
-    this.ctx.stroke();
-
-    // Bottom-right
-    this.ctx.beginPath();
-    this.ctx.moveTo(cx + gap, cy + size + gap);
-    this.ctx.lineTo(cx + size + gap, cy + size + gap);
-    this.ctx.lineTo(cx + size + gap, cy + gap);
-    this.ctx.stroke();
-
-    this.ctx.restore();
   }
 
   private renderMenu(): void {

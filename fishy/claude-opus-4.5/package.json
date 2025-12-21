@@ -3,8 +3,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "bun run src/index.ts",
-    "build": "bun build --compile --minify --sourcemap --bytecode src/index.ts --outfile=dist/cli",
+    "start": "bun run --hot src/server.ts",
+    "build": "bun build src/game/index.ts --outdir=dist --minify",
     "validate": "concurrently --group --names typecheck,lint,test --prefix name --prefix-colors auto \"bun run typecheck\" \"bun run lint\" \"bun run test\"",
     "typecheck": "tsc --noEmit",
     "lint": "biome check --write --diagnostic-level=error",

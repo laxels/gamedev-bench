@@ -1,5 +1,7 @@
+import { fileURLToPath } from "node:url";
+
 const PUBLIC_ROOT = new URL("../public/", import.meta.url);
-const CLIENT_ENTRY = new URL("./client.ts", import.meta.url);
+const CLIENT_ENTRY = fileURLToPath(new URL("./client.ts", import.meta.url));
 
 const PORT = Number(Bun.env.PORT ?? "3000") || 3000;
 const HOST = Bun.env.HOST ?? "0.0.0.0";

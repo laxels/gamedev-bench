@@ -206,36 +206,15 @@ export function drawFishbones(ctx: CanvasRenderingContext2D, eaten: number) {
 
   // Level 3 (25s) - unbounded row.
   for (let i = 0; i < level3; i++)
-    drawFishbone(
-      ctx,
-      marginX + i * 62,
-      topY,
-      1.05,
-      -0.35 + (i % 3) * 0.12,
-      0.95,
-    );
+    drawFishbone(ctx, marginX + i * 74, topY, 1.05, 0.95);
 
   // Level 2 (5s)
   for (let i = 0; i < level2; i++)
-    drawFishbone(
-      ctx,
-      marginX + i * 48,
-      topY + rowGap,
-      0.82,
-      -0.1 + (i % 2) * 0.12,
-      0.85,
-    );
+    drawFishbone(ctx, marginX + i * 62, topY + rowGap, 0.82, 0.85);
 
   // Level 1 (1s)
   for (let i = 0; i < level1; i++)
-    drawFishbone(
-      ctx,
-      marginX + i * 44,
-      topY + rowGap * 2,
-      0.74,
-      0.02 + (i % 2) * 0.08,
-      0.8,
-    );
+    drawFishbone(ctx, marginX + i * 58, topY + rowGap * 2, 0.74, 0.8);
 }
 
 function drawFishbone(
@@ -243,60 +222,80 @@ function drawFishbone(
   x: number,
   y: number,
   scale: number,
-  rotation: number,
   alpha: number,
 ) {
   ctx.save();
   ctx.translate(x, y);
-  ctx.rotate(rotation);
   ctx.scale(scale, scale);
   ctx.globalAlpha = alpha;
 
   const spine = 34;
+  const headR = 8;
+  const tailLen = 10;
+
+  const fill = "rgba(255,255,255,0.88)";
+  const outline = "rgba(140,140,140,0.55)";
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
 
-  // Fill
+  // Spine (outline then fill).
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.lineTo(spine, 0);
+  ctx.lineWidth = 11;
+  ctx.strokeStyle = outline;
+  ctx.stroke();
   ctx.beginPath();
   ctx.moveTo(0, 0);
   ctx.lineTo(spine, 0);
   ctx.lineWidth = 8;
-  ctx.strokeStyle = "rgba(255,255,255,0.85)";
+  ctx.strokeStyle = fill;
   ctx.stroke();
 
   // Head
   ctx.beginPath();
-  ctx.arc(0, 0, 8, 0, Math.PI * 2);
-  ctx.fillStyle = "rgba(255,255,255,0.9)";
+  ctx.arc(0, 0, headR, 0, Math.PI * 2);
+  ctx.fillStyle = fill;
   ctx.fill();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = outline;
+  ctx.stroke();
 
   // Tail
   ctx.beginPath();
   ctx.moveTo(spine, 0);
-  ctx.lineTo(spine + 10, -7);
-  ctx.lineTo(spine + 10, 7);
+  ctx.lineTo(spine + tailLen, -7);
+  ctx.lineTo(spine + tailLen, 7);
   ctx.closePath();
+  ctx.fillStyle = fill;
   ctx.fill();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = outline;
+  ctx.stroke();
 
   // Ribs
-  ctx.strokeStyle = "rgba(255,255,255,0.85)";
-  ctx.lineWidth = 4;
   for (let i = 1; i <= 4; i++) {
     const px = (spine * i) / 5;
     const r = 10 - i * 1.2;
+    // Outline.
     ctx.beginPath();
     ctx.moveTo(px, 0);
     ctx.lineTo(px - 4, -r);
     ctx.moveTo(px, 0);
     ctx.lineTo(px - 4, r);
+    ctx.strokeStyle = outline;
+    ctx.lineWidth = 5.5;
+    ctx.stroke();
+    // Fill.
+    ctx.beginPath();
+    ctx.moveTo(px, 0);
+    ctx.lineTo(px - 4, -r);
+    ctx.moveTo(px, 0);
+    ctx.lineTo(px - 4, r);
+    ctx.strokeStyle = fill;
+    ctx.lineWidth = 3.8;
     ctx.stroke();
   }
-
-  // Outline
-  ctx.globalAlpha = alpha * 0.55;
-  ctx.strokeStyle = "rgba(40,40,40,0.6)";
-  ctx.lineWidth = 1.6;
-  ctx.strokeRect(-10, -12, spine + 26, 24);
 
   ctx.restore();
 }

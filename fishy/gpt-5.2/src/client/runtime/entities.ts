@@ -137,7 +137,7 @@ export function updateRun(state: RunState, dt: number, intent: MovementIntent) {
   state.player.x += state.player.vx * dt;
   state.player.y += state.player.vy * dt;
 
-  const hb = playerHitbox(state.player);
+  let hb = playerHitbox(state.player);
   const top = 0;
   const bottom = GAME_HEIGHT - 6;
   const left = 0;
@@ -146,16 +146,18 @@ export function updateRun(state: RunState, dt: number, intent: MovementIntent) {
   if (hb.y <= top) {
     state.player.y = top + hb.h / 2;
     if (state.player.vy < 0) state.player.vy = 0;
+    hb = playerHitbox(state.player);
   }
 
   if (hb.y + hb.h >= bottom) {
     state.player.y = bottom - hb.h / 2;
     if (state.player.vy > 0) state.player.vy = 0;
+    hb = playerHitbox(state.player);
   }
 
   // Teleport horizontally.
-  if (hb.x <= left) state.player.x = right + hb.w / 2;
-  if (hb.x + hb.w >= right) state.player.x = -hb.w / 2;
+  if (hb.x <= left) state.player.x = right - hb.w / 2;
+  else if (hb.x + hb.w >= right) state.player.x = left + hb.w / 2;
 
   if (intent.x !== 0) state.player.facing = intent.x;
 

@@ -1,0 +1,25 @@
+{
+  "name": "fishy",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "bun run --hot src/server.ts",
+    "build": "bun build src/game/index.ts --outdir=dist --minify",
+    "validate": "concurrently --group --names typecheck,lint,test --prefix name --prefix-colors auto \"bun run typecheck\" \"bun run lint\" \"bun run test\"",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check --write --diagnostic-level=error",
+    "test": "bun test --pass-with-no-tests"
+  },
+  "dependencies": {
+    "@dotenvx/dotenvx": "^1.51.2",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.10",
+    "@types/bun": "latest",
+    "@types/lodash": "^4.17.21",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "typescript": "^5.9.3"
+  }
+}

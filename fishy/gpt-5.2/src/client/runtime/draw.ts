@@ -380,13 +380,15 @@ function drawFish(ctx: CanvasRenderingContext2D, f: FishDraw) {
   ctx.scale(f.facing, 1);
 
   // Tail
+  const bodyRx = w * 0.48;
+  const bodyRy = h * 0.52;
   ctx.save();
-  ctx.translate(-w * 0.5 + tailW * 0.45, 0);
+  ctx.translate(-bodyRx, 0);
   ctx.rotate(swim);
   ctx.beginPath();
-  ctx.moveTo(-tailW, 0);
-  ctx.lineTo(0, -tailH * 0.5);
-  ctx.lineTo(0, tailH * 0.5);
+  ctx.moveTo(0, 0);
+  ctx.lineTo(-tailW, -tailH * 0.5);
+  ctx.lineTo(-tailW, tailH * 0.5);
   ctx.closePath();
   ctx.fillStyle = fishColor(f.hue, 0.55);
   ctx.strokeStyle = fishColor(f.hue, 0.35);
@@ -396,14 +398,7 @@ function drawFish(ctx: CanvasRenderingContext2D, f: FishDraw) {
   ctx.restore();
 
   // Body
-  const bodyX = -w * 0.08;
-  const bodyR = h * 0.52;
-  const grad = ctx.createLinearGradient(
-    bodyX - w * 0.2,
-    0,
-    bodyX + w * 0.55,
-    0,
-  );
+  const grad = ctx.createLinearGradient(-w * 0.32, 0, w * 0.52, 0);
   grad.addColorStop(0, fishColor(f.hue, 0.62));
   grad.addColorStop(0.55, fishColor(f.hue, 0.45));
   grad.addColorStop(1, fishColor(f.hue, 0.2));
@@ -412,19 +407,22 @@ function drawFish(ctx: CanvasRenderingContext2D, f: FishDraw) {
   ctx.lineWidth = Math.max(2, w * 0.025);
 
   ctx.beginPath();
-  ctx.ellipse(bodyX, 0, w * 0.52, bodyR, 0, 0, Math.PI * 2);
+  ctx.ellipse(0, 0, bodyRx, bodyRy, 0, 0, Math.PI * 2);
   ctx.fill();
   ctx.stroke();
 
   // Mouth
   ctx.strokeStyle = "rgba(30,30,30,0.35)";
-  ctx.lineWidth = Math.max(1.6, w * 0.02);
+  ctx.lineWidth = Math.max(1.4, w * 0.018);
   ctx.beginPath();
-  ctx.arc(w * 0.46, -h * 0.05, h * 0.2, Math.PI * 0.15, Math.PI * 0.85);
+  const mouthR = h * 0.12;
+  const mouthX = bodyRx - mouthR * 0.85;
+  const mouthY = -h * 0.05;
+  ctx.arc(mouthX, mouthY, mouthR, -0.8, 0.8);
   ctx.stroke();
 
   // Eye
-  const eyeX = w * 0.26;
+  const eyeX = w * 0.2;
   const eyeY = -h * 0.18;
   const eyeR = h * (f.eyeBig ? 0.22 : 0.18);
   ctx.fillStyle = "rgba(255,255,255,0.95)";
@@ -441,7 +439,7 @@ function drawFish(ctx: CanvasRenderingContext2D, f: FishDraw) {
   ctx.fill();
 
   // Gills
-  const gillX = w * 0.14;
+  const gillX = w * 0.09;
   ctx.strokeStyle = "rgba(0,0,0,0.18)";
   ctx.lineWidth = Math.max(1, w * 0.015);
   for (let i = -1; i <= 1; i++) {
